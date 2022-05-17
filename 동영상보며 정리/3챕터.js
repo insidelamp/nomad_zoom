@@ -32,6 +32,20 @@
 
 /*
 
+4. 소켓 연결후 메세지 보내는걸 서버에 작성시 
+<Buffer 68 65 6c 6c 6f 20 66 72 6f 6d 20 74 68 65 20 62 72 6f 77 73 65 72 21>
+라는 에러가 나옴
+
+socket.on("message", (message) => {
+console.log(message)
+})
+
+위에꺼에서 밑에껄로 수정
+
+socket.on("message", (message) => {
+console.log(message.toString('utf8'))
+})
+
 */
 
 /*
