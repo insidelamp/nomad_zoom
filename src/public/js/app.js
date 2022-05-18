@@ -53,3 +53,63 @@ nickForm.addEventListener("submit", handleNickSubmit);
 */
 
 const socket = io();
+
+const welcome = document.getElementById("welcome");
+const form = welcome.querySelector("form");
+const room = document.getElementById("room");
+//방이 없을시 방만드는 버튼 or 방 입장되었을경우 채팅 나누는 버튼
+room.hidden = true;
+
+let roomName;
+
+//입장시 출력되는 함수
+function addMessage(message) {
+  const ul = room.querySelector("ul");
+  const li = document.createElement("li");
+  li.innerText = message;
+  ul.appendChild(li);
+}
+// 대화창에 메세지가 보이는 함수
+function handleMessageSubmit(event) {
+  event.preventDefault();
+  const input = room.querySelector("input");
+  const value = input.value;
+  socket.emit("new_message", input.value, roomName, () => {
+    addMessage(`You : ${value}`);
+  });
+  input.value = "";
+}
+// 벡엔드로 new_message이벤트를 보내고 input.value와 방이름을 알기위해 roomName과 백엔드에서 시작시킬수있는 함수를 보냄
+
+// 방 만드는 함수
+function showRoom() {
+  welcome.hidden = true;
+  room.hidden = false;
+  const h3 = room.querySelector("h3");
+  h3.innerText = `Room ${roomName}`;
+  const form = room.querySelector("form");
+  form.addEventListener("submit", handleMessageSubmit);
+}
+// 방생성하는 함수
+function handleRoomSubmit(event) {
+  event.preventDefault();
+  const input = form.querySelector("input");
+  socket.emit("enter_room", input.value, showRoom);
+  roomName = input.value;
+  input.value = "";
+}
+
+form.addEventListener("submit", handleRoomSubmit);
+
+//입장시 출력
+socket.on("welcome", () => {
+  addMessage("someone joined!");
+});
+//퇴장시 출력
+socket.on("bye", () => {
+  addMessage("someone left ㅠㅠ");
+});
+
+socket.on("new_message", addMessage);
+
+// 위의 방식이나 밑의방식이나 똑같이 작동함

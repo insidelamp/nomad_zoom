@@ -61,13 +61,50 @@ io 함수는 알아서 socket.io 를 실행하고있는 서버를 찾음
 
 /* 
 
-*/
-/* 
+1. 직접만든 event가있다 ( 프레임워크를 사용하기전에는 message로 고정되어 message로 사용해야함)
+2. 프론트엔드에서 오브젝트를 전송할수있음 
+( 오브젝트로 전달 불가능 프레임워크를 사용하기전에는 제이슨파싱해서 보내줘야함, Socket IO는 오브젝트를 문자로 바꿔주고 다시 알아서 자바스크립트 오브젝트로 만들어줌  )
 
 */
 /* 
 
+emit(방출하다) 메서드의 argument
+
+서버로부터 함수를 호출할수있는데  그 함수는 프론트엔드에 함수가있음 그게 socket.emit 임 
+클라이언트의  socket.emit 이름과 서버의 socket.on의 이름은 같아야함  ( ex: enter_room) 
+socket.emit 에는 첫번째 argument에는 event 이름이 들어감, 두번쨰는 보내고싶은 payload가 들어감 , 새번째는 서버에서 호출하는 함수가 들어감
+
 */
 /* 
+
+2.3 정리
+
+프레임워크를 사용하기 전에는 message만 보낼수있었음  ( 오직 string 로 되어있는 메세지만 보낼수있었음 )
+string을 parse 하고 message.type을 얻을수 있었음
+
+하지만 SocketIO를 사용하면 위와 같은방법으로만 사용하지않아도됨
+1. SocketIO를 이용하면 모든것이 message일 필요가없음  ( 여러타입의 메세지가 새익면 메세지 함수가 엄청 커지기때문에 힘듬)
+2. 대신 client에서 원하는 어떠한 event든 모두 emit해줄수있음 
+3. 전송할때 정말 우리가 우너하는 아무거나 전송해줄수있음  ( 클라이언트에서 서버로 보내기 )
+    그전에는 텍스트만 전송할수있었음 
+    SocketIO를사용하면 숫자를 보낼수도있고 object를 보내줄수도있고, 한가지만 보내야한다는 제약도 없음 원하는만큼 전송 가능
+    
+socket.emit("enter_room" = 이름, { payload: input.value }= 오브젝트, () => {
+    console.log("server is done!");
+  } =  함수 );
+
+SocketIO 프레임워크를  사용하기전에는 여러가지를 보낼수없고 string 한가지만 보내줄수있었음 
+*/
+
+/* 
+handleMessageSubmit 설명
+
+form 도 받고 handleMessageSubmit 도 하고 중복된 이벤트도 막아주고있음  
+new_message event를 보내고있음  이건 백엔드로 가게됨
+첫번쨰 argument로 input.value 를 보내고 ( msg )
+두번째 argument는 (roomName ) 방제목이다 ( 메세지를 어디로 보내야하는지 알아야해서 )(소켓 방이 여러개있을수도있어서)
+세번쨰는 함수를 보내는데 handleMessageSubmit함수가 모든게 끝나면 호출됨 server.js에서는 done() 임
+done() 코드는 백엔드에서 실행하지않음 
+백엔드에서 done을 호출했을경우 프론트에서 코드를실행함 
 
 */

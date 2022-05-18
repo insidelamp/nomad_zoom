@@ -15,7 +15,24 @@ const httpServer = http.createServer(app);
 const wsServer = SocketIO(httpServer);
 
 wsServer.on("connection", (socket) => {
-  console.log(socket);
+  // 소켓 연결 되었을떄
+  socket.onAny((event) => {
+    console.log(`Socket Event : ${event}`);
+  });
+  // 채팅방에 입장 했을떄
+  socket.on("enter_room", (roomName, done) => {
+    socket.join(roomName);
+    done();
+    socket.to(roomName).emit("welcome");
+  });
+  // 채팅방에서 나갔을떄
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) => socket.to(room).emit("bye"));
+  });
+  socket.on("new_message", (msg, room, done) => {
+    socket.to(room).emit("new_message", msg);
+    done();
+  });
 });
 /*
 const wss = new WebSocket.Server({ server });
@@ -46,16 +63,6 @@ wss.on("connection", (socket) => {
   });
 });
  */
-const handleListen = () => console.log(`Listening on http:/localhost:3000`);
 
+const handleListen = () => console.log(`Listening on http://localhost:3000`);
 httpServer.listen(3000, handleListen);
-
-{
-  type: "message";
-  payload: "hello everyone!";
-}
-
-{
-  type: "nickname";
-  payload: "hi!";
-}
