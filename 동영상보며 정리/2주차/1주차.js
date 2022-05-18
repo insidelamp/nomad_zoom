@@ -36,3 +36,38 @@ Socket.IO는 우리에게 신뢰성을줌
 4. Firewall 혹은 proxy 가 있거나 등등 어떤경우에든 
 Socket.IO 는 실시간 기능을 제공해주는 기능임 
 */
+
+/* 
+
+http://localhost:3000/socket.io/socket.io.js <- 로컬호스트가아닌 이 화면으로 보여주는 이유
+socketIO가 websocket의 부가기능이 아니기떄문임
+1. SocketIO 는 재연결 기능이 있고 
+2. websocket를 사용할수없을경우 socketIO는 다른것을 사용해서 가동됨
+
+*/
+
+/* 
+
+
+socketIO를 설치해주면 화면에서 io라는 함수를 확인할수있음
+
+io는 자동적으로 백엔드 socket.io 와 연결해주는 함수임
+
+그래서 
+화면에 const socket =io() ; 만 설정해주면 
+io 함수는 알아서 socket.io 를 실행하고있는 서버를 찾음 
+
+*/
+
+/* 
+
+*/
+/* 
+
+*/
+/* 
+
+*/
+/* 
+
+*/

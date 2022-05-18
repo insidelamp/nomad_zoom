@@ -1,3 +1,6 @@
+/*
+자바스크립트 wssocket
+
 const messageList = document.querySelector("ul");
 const nickForm = document.querySelector("#nick");
 const messageForm = document.querySelector("#message");
@@ -47,3 +50,6 @@ function handleNickSubmit(event) {
 
 messageForm.addEventListener("submit", handleSubmit);
 nickForm.addEventListener("submit", handleNickSubmit);
+*/
+
+const socket = io();
