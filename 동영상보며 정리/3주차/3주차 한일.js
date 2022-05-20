@@ -193,5 +193,8 @@ Firefox가 offer 을 받으면 그 offer로 setRemoteDescription 을 함
 그러면 Firefox 는 answer 을 생성하고 Firefox 는 그 answer로 setLocalDescription을 함
 Peer to Peer 에서 getUserMedia() 와 addStream() 은 패스함 
 왜냐면 이미 Firefox( 새로운 브라우저(사용자)  ) 가 방에 들어왔을떄 그것들을 실행해주기때문임  
+answer 을 보낸후
+그 answer은 다시 signaling server  즉 Socket.IO 로 돌아감 
+Brave 브라우저에서 그 함수를 받았을때 setRemoteDescription을 하게됨 
 
 */
