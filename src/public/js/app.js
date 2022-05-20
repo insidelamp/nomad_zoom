@@ -101,17 +101,18 @@ cameraSelect.addEventListener("input", handleCameraChange);
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
 
-async function startMedia() {
+async function initCall() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
   makeConnection();
 }
 
-function handleWelcomeSubmit(event) {
+async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
-  socket.emit("join_room", input.value, startMedia);
+  await initCall();
+  socket.emit("join_room", input.value);
   roomName = input.value;
   input.value = "";
 }
@@ -128,8 +129,15 @@ socket.on("welcome", async () => {
   socket.emit("offer", offer, roomName);
 });
 //Peer B 에서 보이는것
-socket.on("offer", (offer) => {
-  console.log(offer);
+socket.on("offer", async (offer) => {
+  myPeerConnection.setRemoteDescription(offer);
+  const answer = await myPeerConnection.createAnswer();
+  myPeerConnection.setRemoteDescription(answer);
+  socket.emit("answer", answer);
+});
+
+socket.on("answer", (answer) => {
+  myPeerConnection.setRemoteDescriptionf(answer);
 });
 
 //RTC COde
@@ -138,22 +146,5 @@ function makeConnection() {
   myPeerConnection = new RTCPeerConnection();
   myStream
     .getTracks()
-    .forEach((track) => myPeerConnection.addTrack(tract, myStream));
+    .forEach((track) => myPeerConnection.addTrack(track, myStream));
 }
-
-/*
-
-영상과 오디오 데이터를 주고 받고 할때, 그 영상의 오디오와 데이터를 peer connection 에 넣어야함 
-서로 다른 브라우저에서 카메라와 마이크의 데이터 stream 을 받아 연결안에 집어넣음 
-아직 브라우저들을 연결하지않고 각 브라우저들을 따로 구성함 
-이 화면에서는 peer A는 브라우저인데 강의에서는 Brave 라는 브라우저와 Firefox라는 브라우저 2개를 사용해서
-Peer A = Brave , Peer B = Firefox 로 예를 들어서 사용함
-현재 나는 Peer A = Crome , Peer B = Secret Crome 로 사용함
-Peer A 에서 방(123) 을 만들고
-Peer B 에서 방(123) 에 접속시 A에 나오는 함수가 socket("welcome") 이고
-해당하는 정보들을 소켓 에밋 으로해서 서버로 보내주고 서버에서 오퍼를 받아 B에 위치정보등등 을 보여주고 a에는   console.log("sent the offer") 요거를 보여준다
-offer 를 받아온순간 위치정보등등을 받아와서 대화가 가능함 
-
-
-
-*/
