@@ -198,3 +198,34 @@ answer 을 보낸후
 Brave 브라우저에서 그 함수를 받았을때 setRemoteDescription을 하게됨 
 
 */
+
+/*
+
+3-7  Peer to Peer 의 icecandidate 에 대해 알아봄 
+
+offer 와 answer 을 받는걸 모두 끝냈을때   Peer to Peer 연결의 양쪽에서 icecandidate 라는 이벤트를 실행시킴 
+
+icecandidate = internet Connectivity Establishment ( 인터넷 연결 생성 ) 
+
+icecandidate 는 webRTC 에 필요한 프로토콜을 의미함 ( 멀리 떨어진 장치와 소통할수 있게 하기 위함 )
+
+즉 브라우저가 서로 소통할수있게 해주는 방법  ( 어떤 소통방법이 가장 좋을것인지를 제안할떄 씀 )
+
+다수으 candidate(후보) 들이 각각의 연결에서 제안되고 그들은 서로의 동의 하에 하나를 선택해서 소통을함 
+
+
+answer = signaling이 전부 일어난뒤 icecandidate listen 하게해줘야함
+
+
+
+local tunnel 을 사용해서 전세계와 공유하게해주는걸 설치함 
+
+
+ 터미널로 포트를 열면 휴대폰에서 접속가능한 링크가 나옴 -> lt --port 3000
+
+
+핸드폰으로 해당 링크를 접속시 같은 와이파이가 아닐경우 bad gateway 가 나오게되는 오류가 발생함
+현재 같은 와이파이를 사용해서 에러는 안나고있는상태임 
+위 에러를 다음 동영상에서 해결하려고하는중
+
+*/
